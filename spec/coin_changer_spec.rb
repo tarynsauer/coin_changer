@@ -26,6 +26,12 @@ describe '#initialize' do
     end
   end
 
+  context 'with a non-numeric denomination' do
+    it 'throws an error' do
+      expect { CoinChanger.new([0.01, 0.05, 0.10, 'buck'], 100) }.to raise_error
+    end
+  end
+
   context 'with an invalid maximum amount' do
     it 'throws an error' do
       expect { CoinChanger.new([0.01, 0.05, 0.10, 0.25], 'one hundred') }.to raise_error
