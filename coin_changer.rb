@@ -6,6 +6,7 @@ class CoinChanger
     @valid_denominations = [100.00, 50.00, 20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01]
     @max_amount_allowed = max_amount_allowed
     @available_denominations = available_denominations.sort
+    raise ArgumentError, 'Max amount allowed must be numeric.' unless max_amount_allowed.is_a?(Numeric)
     validate_input(@available_denominations)
   end
 
