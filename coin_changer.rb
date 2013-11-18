@@ -22,7 +22,8 @@ class CoinChanger
 
   def get_change(amount)
     raise ArgumentError, 'Input must be a numeric value.' unless amount.is_a?(Numeric)
-    raise ArgumentError, "Change amount cannot be greater than #{max_amount_allowed}." unless amount <= max_amount_allowed
+    raise ArgumentError, "Change amount cannot be greater than #{max_amount_allowed}." if amount > max_amount_allowed
+    raise ArgumentError, "Change amount must be greater than 0." if amount <= 0
     change_total = amount = amount.round(2)
     output = []
     sum = 0

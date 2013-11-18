@@ -47,6 +47,18 @@ describe '#get_change errors' do
       expect { change.get_change(100.01) }.to raise_error
     end
   end
+
+  context 'input must be greater than 0' do
+    it 'throws an error' do
+      expect { change.get_change(0) }.to raise_error
+    end
+  end
+
+  context 'input cannot be negative' do
+    it 'throws an error' do
+      expect { change.get_change(-10) }.to raise_error
+    end
+  end
 end
 
 describe '#get_change' do
