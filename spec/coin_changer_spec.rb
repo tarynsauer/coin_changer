@@ -42,8 +42,31 @@ describe '#get_change' do
   let(:change) {CoinChanger.new([20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01], 100)}
   context 'returns correct change as an array' do
     it 'returns an array of three quarters' do
-      result = change.get_change(0.75)
-      result.should eq [0.25, 0.25, 0.25]
+      change.get_change(0.75).should eq [0.25, 0.25, 0.25]
+    end
+  end
+
+  context 'returns correct change as an array' do
+    it 'returns an array of three quarters, two dimes, one penny' do
+      change.get_change(0.955555555).should eq [0.25, 0.25, 0.25, 0.10, 0.10, 0.01]
+    end
+  end
+
+  context 'returns correct change as an array' do
+    it 'returns an array of one twenty, one dime, and one penny' do
+      change.get_change(20.11).should eq [20.00, 0.10, 0.01]
+    end
+  end
+
+  context 'returns correct change as an array' do
+    it 'returns an array of one quarter and four pennies' do
+      change.get_change(0.2944444441).should eq [0.25, 0.01, 0.01, 0.01, 0.01]
+    end
+  end
+
+  context 'returns correct change as an array' do
+    it 'returns an array of one five' do
+      change.get_change(5).should eq [5.0]
     end
   end
 end

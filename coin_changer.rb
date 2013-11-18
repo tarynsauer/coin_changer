@@ -22,20 +22,24 @@ class CoinChanger
   def get_change(amount)
     raise ArgumentError, 'Input must be a numeric value.' unless amount.is_a?(Numeric)
     raise ArgumentError, "Change amount cannot be greater than #{max_amount}." unless amount <= max_amount
-    total = amount.round(2)
+    total = amount = amount.round(2)
     output = []
-    value = valid_denominations.shift
     sum = 0
+    value = valid_denominations.shift
     until sum == total
       if (amount - value) >= 0
         output << value
-        amount = amount - value
+        amount = (amount - value).round(2)
+        sum = output.reduce(:+)
+        sum = sum.round(2)
       else
         value = valid_denominations.shift
-        sum = output.reduce(:+)
       end
     end
     output
   end
 
 end
+
+# change = CoinChanger.new([20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01], 100)
+# p change.get_change(0.75)
