@@ -14,6 +14,12 @@ describe '#initialize' do
     end
   end
 
+  context 'with available denominations as floats and integers' do
+    it 'does not throw an error' do
+      expect { CoinChanger.new([0.01, 0.05, 0.10, 0.25, 5, 10], 100) }.to_not raise_error(ArgumentError)
+    end
+  end
+
   context 'with an unrecognized denomination' do
     it 'throws an error' do
       expect { CoinChanger.new([0.01, 0.05, 0.10, 0.35], 100) }.to raise_error(ArgumentError)
@@ -38,7 +44,7 @@ describe '#get_change errors' do
 end
 
 describe '#get_change' do
-  array = [20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01].shuffle
+  array = [20, 10, 5.00, 1, 0.25, 0.10, 0.05, 0.01].shuffle
   let(:change) {CoinChanger.new(array, 100)}
   context 'returns correct change as an array' do
     it 'returns an array of three quarters' do

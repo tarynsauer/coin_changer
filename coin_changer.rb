@@ -1,10 +1,10 @@
 class CoinChanger
 
-  attr_reader :valid_denominations, :max_amount, :available_denominations
+  attr_reader :valid_denominations, :max_amount_allowed, :available_denominations
 
-  def initialize(available_denominations, max_amount)
-    @valid_denominations = [20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01]
-    @max_amount = max_amount
+  def initialize(available_denominations, max_amount_allowed)
+    @valid_denominations = [100.00, 50.00, 20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01]
+    @max_amount_allowed = max_amount_allowed
     @available_denominations = available_denominations.sort
     validate_input(@available_denominations)
   end
@@ -21,7 +21,7 @@ class CoinChanger
 
   def get_change(amount)
     raise ArgumentError, 'Input must be a numeric value.' unless amount.is_a?(Numeric)
-    raise ArgumentError, "Change amount cannot be greater than #{max_amount}." unless amount <= max_amount
+    raise ArgumentError, "Change amount cannot be greater than #{max_amount_allowed}." unless amount <= max_amount_allowed
     change_total = amount = amount.round(2)
     output = []
     sum = 0
