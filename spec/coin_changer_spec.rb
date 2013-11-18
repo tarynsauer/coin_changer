@@ -38,8 +38,8 @@ describe '#get_change errors' do
 end
 
 describe '#get_change' do
-
-  let(:change) {CoinChanger.new([20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01], 100)}
+  array = [20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01].shuffle
+  let(:change) {CoinChanger.new(array, 100)}
   context 'returns correct change as an array' do
     it 'returns an array of three quarters' do
       change.get_change(0.75).should eq [0.25, 0.25, 0.25]

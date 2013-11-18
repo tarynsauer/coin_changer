@@ -5,14 +5,14 @@ class CoinChanger
   def initialize(available_denominations, max_amount)
     @valid_denominations = [20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01]
     @max_amount = max_amount
-    @available_denominations = available_denominations
+    @available_denominations = available_denominations.sort.reverse
     validate_input(@available_denominations)
   end
 
   def validate_input(available_denominations)
     invalid_denominations = available_denominations.reject{ |value| valid_denominations.include?(value) }
     if available_denominations.empty?
-      raise ArgumentError, 'There are no denominations available to make change.'
+      raise ArgumentError, 'There is no cash available to make change.'
     elsif !invalid_denominations.empty?
       invalid = invalid_denominations.first
       raise ArgumentError, "#{invalid} is not a valid denomination."
@@ -25,7 +25,7 @@ class CoinChanger
     total = amount = amount.round(2)
     output = []
     sum = 0
-    value = valid_denominations.shift
+    value = available_denominations.shift
     until sum == total
       if (amount - value) >= 0
         output << value
@@ -33,13 +33,10 @@ class CoinChanger
         sum = output.reduce(:+)
         sum = sum.round(2)
       else
-        value = valid_denominations.shift
+        value = available_denominations.shift
       end
     end
     output
   end
 
 end
-
-# change = CoinChanger.new([20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01], 100)
-# p change.get_change(0.75)
