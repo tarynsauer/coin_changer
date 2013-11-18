@@ -1,26 +1,41 @@
 class CoinChanger
 
-  attr_reader :denominations
+  attr_reader :valid_denominations, :max_amount, :available_denominations
 
-  def initialize(denominations)
-    @denominations = denominations
-    validate_input(@denominations)
+  def initialize(available_denominations, max_amount)
+    @valid_denominations = [20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01]
+    @max_amount = max_amount
+    @available_denominations = available_denominations
+    validate_input(@available_denominations)
   end
 
-  def validate_input(denominations)
-    valid_denominations = [1, 5, 10, 25, 100, 500, 1000, 2000]
-    invalid_denominations = denominations.reject{ |value| valid_denominations.include?(value) }
-    if denominations.empty?
-      raise 'There are no denominations available to make change.'
+  def validate_input(available_denominations)
+    invalid_denominations = available_denominations.reject{ |value| valid_denominations.include?(value) }
+    if available_denominations.empty?
+      raise ArgumentError, 'There are no denominations available to make change.'
     elsif !invalid_denominations.empty?
       invalid = invalid_denominations.first
-      raise "#{invalid} is not a valid denomination."
+      raise ArgumentError, "#{invalid} is not a valid denomination."
     end
   end
 
   def get_change(amount)
-    raise 'Input must be a numeric value.' unless amount.is_a?(Numeric)
-
+    raise ArgumentError, 'Input must be a numeric value.' unless amount.is_a?(Numeric)
+    raise ArgumentError, "Change amount cannot be greater than #{max_amount}." unless amount <= max_amount
+    total = amount.round(2)
+    output = []
+    value = valid_denominations.shift
+    sum = 0
+    until sum == total
+      if (amount - value) >= 0
+        output << value
+        amount = amount - value
+      else
+        value = valid_denominations.shift
+        sum = output.reduce(:+)
+      end
+    end
+    output
   end
 
 end
